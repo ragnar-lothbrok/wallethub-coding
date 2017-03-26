@@ -1,0 +1,12 @@
+Time Complexity O(n) Space Complexity O(1)
+
+Test Cases 
+
+1.Empty String ""
+2. null
+3. A
+4. AA
+5. AB
+6. ABA
+7. ABAB
+8. AAA

@@ -1,0 +1,5 @@
+Complexity 
+
+O(nlogn) -> HashMap will sort using modified merge sort.
+
+Worse case will happen when all are unique elements.
