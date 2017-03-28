@@ -1,20 +1,16 @@
 package Palindrome;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 public class Phrases {
-
-	private static final Logger logger = Logger.getLogger(Phrases.class.getName());
 
 	/**
 	 * returns the collection of phrases the will be utilized. Phrase selection
@@ -23,11 +19,11 @@ public class Phrases {
 	 * @param inputStreama
 	 * @return
 	 */
-	public Map<String, Integer> getTopPhrases(InputStream inputStream, int limit) {
-
+	public List<Object> getTopPhrases(InputStream inputStream, int limit) {
+		List<Object> filtered = null;
 		// Create a map, where the key is the phrase,
 		// and the value is the number of times phrase occurred in the file.
-		Map<String, Integer> topPhrases = new LinkedHashMap<>();
+		Map<String, Integer> topPhrases = new LinkedHashMap<String, Integer>();
 
 		try {
 
@@ -57,17 +53,16 @@ public class Phrases {
 
 			// Sort the collection by Map value.
 			// Limit the collection to 100000.
-			topPhrases = topPhrases.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-					.limit(limit).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (v1, v2) -> v1,
-							LinkedHashMap::new));
+			filtered = topPhrases.entrySet().stream().sorted(new Comparator<Entry<String, Integer>>() {
+				public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
+					return -o1.getValue().compareTo(o2.getValue());
+				}
+			}).limit(limit).collect(Collectors.toList());
 
-		} catch (FileNotFoundException e) {
-			logger.log(Level.SEVERE, e.toString(), e);
-		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.toString(), e);
+		} catch (Exception e) {
+			System.out.println("Exception occured : " + e.getMessage());
 		}
-
-		return topPhrases;
+		return filtered;
 	}
 
 }
